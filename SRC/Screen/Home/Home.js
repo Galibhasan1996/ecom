@@ -16,6 +16,7 @@ import axios from 'axios'
 import ProductItem from '../../Component/product/ProductItem'
 import { styleConsole } from '../../util/server/Server'
 import { useSelector } from 'react-redux'
+import DropDown from '../dropdown/DropDown'
 
 
 
@@ -27,6 +28,7 @@ const Home = () => {
 
     // ---------------state---------
     const [product, setproduct] = useState([]);
+    const [filterData, setFilterData] = useState("jewelery");
 
     const data = useSelector((state) => state.cart.cart)
     styleConsole("from slice", "data", data)
@@ -48,6 +50,21 @@ const Home = () => {
     useEffect(() => {
         getProduct()
     }, [])
+
+
+
+    const options = [
+        { label: 'mens_clothing', value: "men's clothing" },
+        { label: 'jewelery', value: 'jewelery' },
+        { label: 'electronics', value: 'electronics' },
+        { label: 'womens_clothing', value: "women's clothing" },
+    ];
+
+
+    const handleSelect = (option) => {
+        // console.log('Selected option:', option.value);
+        setFilterData(option.value);
+    };
 
 
     return (
@@ -99,20 +116,19 @@ const Home = () => {
                     </View>
 
                     {/* ------------------deals--------------- */}
-                    <List_2
-                        data={offers}
-                        width={scale(150)}
-                        height={scale(150)}
-                        imageHeight={scale(150)}
-                        imageWidth={scale(150)}
-                        borderRadius={scale(5)}
-                    ></List_2>
+                    <List_2 data={offers}></List_2>
                     {/* --------------product list------------- */}
                     <View>
                         <Text style={[styles.trending_deal, CustomStyle.WhiteColor]}>{"Products"}</Text>
                     </View>
+
+
+                    {/* --------------product filter------------------ */}
+                    <DropDown options={options} onSelect={handleSelect} />
+
+
                     {/* -----------product--------------- */}
-                    <ProductItem data={product}></ProductItem>
+                    <ProductItem data={product} filterData={filterData}></ProductItem>
                 </View>
             </ScrollView>
 

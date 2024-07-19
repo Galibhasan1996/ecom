@@ -3,16 +3,12 @@ import React from 'react'
 import { scale } from 'react-native-size-matters'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
-import { addToCart } from '../../Redux/Slice/Counter/cartSlice'
 
-const List_2 = ({ data, width, height, imageWidth, imageHeight, borderRadius }) => {
+const List_2 = ({ data, }) => {
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
     // ------------navigation------------
     const navigation = useNavigation()
-    // ----------disptch------------
-    const dispatch = useDispatch()
     return (
         <>
             {/* -------------list---------- */}
@@ -20,15 +16,17 @@ const List_2 = ({ data, width, height, imageWidth, imageHeight, borderRadius }) 
                 {
                     data.map((item, index) => {
                         return (
-                            <TouchableOpacity key={index} style={[styles.list_container, { width: scale(width), height: scale(height) }]} onPress={() => {
-                                navigation.navigate("ProductDetail", { data: item })
-                            }}>
-                                <Image source={{ uri: item.image }} style={[styles.list_image, { width: scale(imageWidth), height: scale(imageHeight), borderRadius: scale(borderRadius) }]}></Image>
+                            <View key={index} style={styles.product_detail_contailer} >
+                                <TouchableOpacity style={styles.product_detail_contailer_inside} onPress={() => {
+                                    navigation.navigate("ProductDetail", { data: item })
+                                }}>
+                                    <Image source={{ uri: item.image }} style={[styles.list_image,]}></Image>
+                                </TouchableOpacity>
                                 <View style={styles.offer}>
                                     <Text style={[styles.list_text, CustomStyle.WhiteColor]}>{"Upto "}</Text>
                                     <Text style={[styles.list_text, CustomStyle.WhiteColor]}>{item.offer}</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </View>
                         )
                     })
                 }
@@ -44,15 +42,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff"
     },
-    list_container: {
-        marginVertical: scale(10),
-        marginHorizontal: scale(2),
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     list_image: {
-        // borderRadius: scale(30),
-        // resizeMode: "contain"
+        resizeMode: "contain",
+        width: scale(170),
+        height: scale(170),
     },
     list_text: {
         marginTop: scale(3),
@@ -65,5 +58,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: scale(8),
         borderRadius: scale(5),
+    },
+    product_detail_contailer: {
+        width: scale(190),
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "white",
+        marginVertical: scale(10),
+        marginHorizontal: scale(2),
+        borderRadius: scale(10),
+    },
+    product_detail_contailer_inside: {
+        width: scale(190),
+        height: scale(190),
+        backgroundColor: "white",
+        borderRadius: scale(10),
+        alignItems: 'center',
     }
+
 })

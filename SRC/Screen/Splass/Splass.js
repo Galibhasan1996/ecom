@@ -7,9 +7,8 @@ import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-
-
 const Splass = () => {
+
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
     // --------navigation------------
@@ -24,7 +23,6 @@ const Splass = () => {
             navigaion.replace("Login")
         }
     }
-
 
     useEffect(() => {
         setTimeout(() => {

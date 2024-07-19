@@ -4,19 +4,22 @@ import { scale } from 'react-native-size-matters'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../../Redux/Slice/Counter/cartSlice'
+import { AllColor } from '../../util/Color/AllColor'
 
-const ProductItem = ({ data }) => {
+const ProductItem = ({ data, filterData }) => {
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
     const dispatch = useDispatch()
     return (
         <View style={styles.container}>
             {
-                data?.map((item, index) => {
+                data.filter((item) => item.category === filterData).map((item, index) => {
                     return (
-                        <TouchableOpacity key={index}>
+                        <View key={index} style={{ borderBottomWidth: 1, borderColor: AllColor.Androidgreen, paddingVertical: scale(5) }}>
                             {/* --------------image-------------- */}
-                            <Image source={{ uri: item?.image }} style={styles.Image_}></Image>
+                            <View style={styles.IImage_container}>
+                                <Image source={{ uri: item?.image }} style={styles.Image_}></Image>
+                            </View>
                             {/* -------------title----------------- */}
                             <Text style={CustomStyle.WhiteColor}>{item.title.substring(0, 20)}</Text>
                             {/* ------------price and rating----------- */}
@@ -38,7 +41,7 @@ const ProductItem = ({ data }) => {
                                     <Text style={[styles.button, CustomStyle.WhiteBackground, CustomStyle.BlackColor]}>{"Add to Cart"}</Text>
                                 </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
+                        </View>
                     )
                 })
             }
@@ -62,6 +65,7 @@ const styles = StyleSheet.create({
         width: scale(150),
         height: scale(150),
         borderRadius: scale(10),
+        resizeMode: "contain"
     },
     rating_price: {
         flexDirection: "row",
@@ -72,5 +76,11 @@ const styles = StyleSheet.create({
         padding: scale(5),
         borderRadius: scale(5),
         textAlign: "center"
+    },
+    IImage_container: {
+        width: scale(150),
+        height: scale(150),
+        backgroundColor: "white",
+        borderRadius: scale(10),
     }
 })

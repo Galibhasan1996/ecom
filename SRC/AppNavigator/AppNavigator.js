@@ -6,6 +6,7 @@ import Home from '../Screen/Home/Home'
 import Login from '../Screen/Login/Login'
 import Signup from '../Screen/Signup/Signup'
 import ProductDetail from '../Screen/ProductDetail/ProductDetail'
+import DropDown from '../Screen/dropdown/DropDown'
 
 
 
@@ -21,6 +22,7 @@ const AppNavigator = () => {
                 <Stack.Screen name={"Login"} component={Login} />
                 <Stack.Screen name={"Signup"} component={Signup} />
                 <Stack.Screen name={"ProductDetail"} component={ProductDetail} />
+                <Stack.Screen name={"DropDown"} component={DropDown} />
             </Stack.Navigator>
         </NavigationContainer>
     )
