@@ -9,15 +9,31 @@ import { scale } from 'react-native-size-matters'
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import CommonIcon from '../../Component/Icon/CommonIcon'
 import CommonButton from '../../Component/Button/CommonButton'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../../Redux/Slice/Counter/cartSlice'
 
 const ProductDetail = () => {
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
     const [addWishList, setAddWishList] = useState(false);
-
-    // -----------route--------------
+    const [addCart, setaddCart] = useState(false);
     const { color, image, offer, oldPrice, price, size, title, carouselImages } = useRoute().params.data
-    console.log(carouselImages);
+    const productData = useRoute().params.data
+
+
+    const dispatch = useDispatch()
+
+
+
+    const addDataToSlice = () => {
+        setaddCart(true)
+        dispatch(addToCart(productData))
+        setTimeout(() => {
+            setaddCart(false)
+        }, 5000);
+    }
+
+
 
     return (
         <View style={[styles.container, CustomStyle.WhiteBackground]}>
@@ -52,8 +68,8 @@ const ProductDetail = () => {
                                                 <Text style={CustomStyle.WhiteColor}>{offer}</Text>
                                             </View>
                                             :
-                                            <View >
-                                                <Text style={CustomStyle.WhiteColor}>{"20 %"}</Text>
+                                            <View style={styles.offer_conainer}>
+                                                <Text style={CustomStyle.WhiteColor}>{"20%"}</Text>
                                                 <Text style={CustomStyle.WhiteColor}>{"OFF"}</Text>
                                             </View>
                                     }
@@ -92,7 +108,7 @@ const ProductDetail = () => {
                     </View>
                     {/* --------total price-------------- */}
                     <View >
-                        <Text style={[CustomStyle.BlackColor, { fontWeight: "500", paddingVertical: scale(5), paddingHorizontal: scale(15) }]}>{`Total Price : 4500`}</Text>
+                        <Text style={[CustomStyle.BlackColor, { fontWeight: "500", paddingVertical: scale(5), paddingHorizontal: scale(15) }]}>{`Total Price : ${price}`}</Text>
                     </View>
                     {/* ---------delivery details------------ */}
                     <Text style={[CustomStyle.AndroidColor, { fontWeight: "500", paddingVertical: scale(5), paddingHorizontal: scale(15) }]}>{"FREE delivery Tomorrow by 3 PM Order within 10hrs 30 mins "}</Text>
@@ -107,11 +123,11 @@ const ProductDetail = () => {
                     </View>
                     {/* -------------Add to cart button ---------------- */}
                     <CommonButton
-                        ButtonTitle={"Add to Cart"}
+                        ButtonTitle={addCart === true ? "Added to cart" : "Add to cart"}
                         BtBackgroundColor={AllColor.black}
                         ButtonTitleColor={AllColor.white}
                         marginVertical={scale(5)}
-                        onPress={() => { showToast("success", "Added To Cart", "Added To Cart") }}
+                        onPress={() => { addDataToSlice() }}
                     ></CommonButton>
                     {/* ----------buy now button------------ */}
                     <CommonButton

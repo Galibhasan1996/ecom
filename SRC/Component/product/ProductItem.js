@@ -2,16 +2,19 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, } from 'react-native'
 import React from 'react'
 import { scale } from 'react-native-size-matters'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../../Redux/Slice/Counter/cartSlice'
 
 const ProductItem = ({ data }) => {
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
+    const dispatch = useDispatch()
     return (
         <View style={styles.container}>
             {
                 data?.map((item, index) => {
                     return (
-                        <View key={index}>
+                        <TouchableOpacity key={index}>
                             {/* --------------image-------------- */}
                             <Image source={{ uri: item?.image }} style={styles.Image_}></Image>
                             {/* -------------title----------------- */}
@@ -29,11 +32,13 @@ const ProductItem = ({ data }) => {
                             </View>
                             {/* -------------add to cart -------------- */}
                             <View>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    dispatch(addToCart(item))
+                                }}>
                                     <Text style={[styles.button, CustomStyle.WhiteBackground, CustomStyle.BlackColor]}>{"Add to Cart"}</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     )
                 })
             }

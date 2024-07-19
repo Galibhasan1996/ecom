@@ -10,7 +10,7 @@ export const BASE_URL = `http://192.168.163.${PORT}:3000/api/v1/`
 
 export const styleConsole = (message, WhatCall, data) => {
     const now = new Date().toLocaleTimeString();
-    console.log(`\x1b[33m--- ${message} ${now} ---\x1b[0m  -- \x1b[31m${WhatCall}\x1b[0m  --- `, data);
+    console.log(`\x1b[33m--- ${message} ${now} ---\x1b[0m  \x1b[31m --- ${WhatCall} --- \x1b[0m`, data);
 }
 
 

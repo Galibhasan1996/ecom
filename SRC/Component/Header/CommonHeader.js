@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { scale } from 'react-native-size-matters'
 import CommonIcon from '../Icon/CommonIcon'
+import { AllColor } from '../../util/Color/AllColor'
 
 const CommonHeader = ({ RightIconCategoryName, RightIconName, Rightcolor, LeftIconCategoryName, LeftIconName, Leftcolor, placeholder, Lsize, Rsize, value, onChangeText, placeholderTextColor }) => {
     // ------------custom Style------------
@@ -20,7 +21,7 @@ const CommonHeader = ({ RightIconCategoryName, RightIconName, Rightcolor, LeftIc
                 <View>
                     <TextInput
                         placeholder={placeholder}
-                        style={styles.main_input}
+                        style={[styles.main_input, { color: isDark ? AllColor.black : AllColor.white }]}
                         placeholderTextColor={placeholderTextColor}
                         value={value}
                         onChangeText={onChangeText}

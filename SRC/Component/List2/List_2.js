@@ -3,12 +3,16 @@ import React from 'react'
 import { scale } from 'react-native-size-matters'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../../Redux/Slice/Counter/cartSlice'
 
 const List_2 = ({ data, width, height, imageWidth, imageHeight, borderRadius }) => {
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
     // ------------navigation------------
     const navigation = useNavigation()
+    // ----------disptch------------
+    const dispatch = useDispatch()
     return (
         <>
             {/* -------------list---------- */}

@@ -15,16 +15,21 @@ import List_2 from '../../Component/List2/List_2'
 import axios from 'axios'
 import ProductItem from '../../Component/product/ProductItem'
 import { styleConsole } from '../../util/server/Server'
+import { useSelector } from 'react-redux'
+
+
 
 const Home = () => {
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
     // --------navigation------------
-    const navigaion = useNavigation()
+    const navigation = useNavigation()
 
     // ---------------state---------
     const [product, setproduct] = useState([]);
 
+    const data = useSelector((state) => state.cart.cart)
+    styleConsole("from slice", "data", data)
 
 
 
@@ -88,12 +93,12 @@ const Home = () => {
                     <Deal data={deals}></Deal>
                     {/* ------------line------------ */}
                     <View style={styles.line}></View>
-                    {/* ---------today deals------------------ */}
+                    {/* ---------today deals text------------------ */}
                     <View>
                         <Text style={[styles.trending_deal, CustomStyle.WhiteColor]}>{"Today's Deals"}</Text>
                     </View>
 
-                    {/* ------------------offer--------------- */}
+                    {/* ------------------deals--------------- */}
                     <List_2
                         data={offers}
                         width={scale(150)}
