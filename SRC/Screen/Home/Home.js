@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, StatusBar } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useNavigation } from '@react-navigation/native'
@@ -14,10 +14,10 @@ import Deal from '../../Component/deal/Deal'
 import List_2 from '../../Component/List2/List_2'
 import axios from 'axios'
 import ProductItem from '../../Component/product/ProductItem'
-import { styleConsole } from '../../util/server/Server'
-import { useSelector } from 'react-redux'
+import { BASE_URL, styleConsole } from '../../util/server/Server'
 import DropDown from '../dropdown/DropDown'
-
+import CommonModel from '../../Component/modal/CommonModel'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Home = () => {
@@ -28,12 +28,11 @@ const Home = () => {
 
     // ---------------state---------
     const [product, setproduct] = useState([]);
-    const [filterData, setFilterData] = useState("jewelery");
-
-    const data = useSelector((state) => state.cart.cart)
-    styleConsole("from slice", "data", data)
-
-
+    const [filterData, setFilterData] = useState("All");
+    const [visible, setvisible] = useState(false);
+    const [selectedAddress, setselectedAddress] = useState("");
+    const [nameFromModal, setnameFromModal] = useState('');
+    const [id, setid] = useState('');
 
 
     const getProduct = async () => {
@@ -46,7 +45,6 @@ const Home = () => {
         }
     }
 
-
     useEffect(() => {
         getProduct()
     }, [])
@@ -54,10 +52,11 @@ const Home = () => {
 
 
     const options = [
-        { label: 'mens_clothing', value: "men's clothing" },
+        { label: 'All', value: "All" },
+        { label: 'mens', value: "men's clothing" },
         { label: 'jewelery', value: 'jewelery' },
         { label: 'electronics', value: 'electronics' },
-        { label: 'womens_clothing', value: "women's clothing" },
+        { label: 'womens', value: "women's clothing" },
     ];
 
 
@@ -67,8 +66,49 @@ const Home = () => {
     };
 
 
+    // --------------getUser Address----------------
+    const [UserAddresses, setUserAddresses] = useState([]);
+    styleConsole("🚀 ~ file: Home.js:73 ~ Home ~ UserAddresses:", "from Home Screen", UserAddresses)
+
+
+
+
+    const getId = async () => {
+        const id = await AsyncStorage.getItem("_id")
+        setid(id)
+    }
+
+    const getUserAddress = async () => {
+        try {
+            const data = await fetch(`${BASE_URL}auth/getUserAddress/${id}`)
+
+            const res = await data.json()
+
+
+            if (res.error) {
+                return showToast("error", res.error, res.error)
+            } else {
+                setUserAddresses(res)
+            }
+        } catch (error) {
+            if (error instanceof TypeError && error.message === 'Network request failed') {
+                console.error('- INCORRECT URL END POINT -');
+            }
+            console.log("🚀 ~ file: Home.js:100 ~ getUserAddress ~ error:", error)
+        }
+    }
+
+
+    useEffect(() => {
+        getId()
+        getUserAddress()
+    }, [visible])
+
+
+
     return (
         <>
+
             <ScrollView backgroundColor={isDark ? AllColor.black : AllColor.white}>
                 <View style={[styles.container1, CustomStyle.BlackBackground]}>
                     {/* ------------common header--------------- */}
@@ -76,7 +116,7 @@ const Home = () => {
                         placeholder={"Search for products, brands and more"}
                         LeftIconCategoryName={"EvilIcons"}
                         LeftIconName={"search"}
-                        Leftcolor={isDark ? AllColor.black : AllColor.white}
+                        Leftcolor={isDark ? AllColor.white : AllColor.black}
                         RightIconCategoryName={"Feather"}
                         RightIconName={"mic"}
                         Rightcolor={AllColor.black}
@@ -85,11 +125,18 @@ const Home = () => {
                         placeholderTextColor={isDark ? AllColor.gray : AllColor.gray}
                     ></CommonHeader>
                     {/* ------------address---------------- */}
-                    <View style={styles.top_Address_container}>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.top_Address_container} onPress={() => {
+                        setvisible(true)
+                    }}>
                         <CommonIcon IconCategoryName={"Ionicons"} IconName={"location-outline"} color={isDark ? AllColor.black : AllColor.white} size={scale(17)}></CommonIcon>
-                        <Text style={[styles.top_Address_text, CustomStyle.BlackColor]}>{"Deliver to Mohammad - Hazrat Nagar Garhi -244301"}</Text>
+                        {
+                            selectedAddress == "" ?
+                                <Text style={[styles.top_Address, CustomStyle.BlackColor, { marginHorizontal: scale(5) }]}>{"Select your address"}</Text>
+                                :
+                                <Text style={[styles.top_Address_text, CustomStyle.BlackColor]}>{`Deliver to ${nameFromModal} - ${selectedAddress.city} -${selectedAddress.postalCode}`}</Text>
+                        }
                         <CommonIcon IconCategoryName={"AntDesign"} IconName={"caretdown"} color={isDark ? AllColor.black : AllColor.white} size={scale(15)}></CommonIcon>
-                    </View>
+                    </TouchableOpacity>
                     {/* -------list------------- */}
                     <ListComponent
                         list={list}
@@ -131,7 +178,13 @@ const Home = () => {
                     <ProductItem data={product} filterData={filterData}></ProductItem>
                 </View>
             </ScrollView>
-
+            <CommonModel visible={visible}
+                setvisible={setvisible}
+                UserAddresses={UserAddresses}
+                setselectedAddress={setselectedAddress}
+                selectedAddress={selectedAddress}
+                setnameFromModal={setnameFromModal}
+            ></CommonModel>
         </>
     )
 }

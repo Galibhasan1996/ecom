@@ -13,8 +13,8 @@ const CommonHeader = ({ RightIconCategoryName, RightIconName, Rightcolor, LeftIc
     // --------navigation------------
     const navigaion = useNavigation()
     return (
-        <View style={[styles.container, CustomStyle.AndroidBackgroundColor]}>
-            <View style={[styles.input_container, CustomStyle.WhiteBackground]}>
+        <View style={[styles.container, CustomStyle.WhiteBackground]}>
+            <View style={[styles.input_container, CustomStyle.BlackBackground]}>
                 <View style={styles.seach_Icon}>
                     <CommonIcon IconCategoryName={LeftIconCategoryName} IconName={LeftIconName} color={Leftcolor} size={Lsize} ></CommonIcon>
                 </View>

@@ -170,3 +170,36 @@ export const offers = [
         size: "8GB RAM, 128GB Storage",
     },
 ];
+
+
+
+export const stepData =
+    [
+        { title: "Address", content: "Address Form" },
+        { title: "Delivery", content: "Delivery Options" },
+        { title: "Payment", content: "Payment Details" },
+        { title: "Place Order", content: "Order summary" },
+
+    ]
+
+
+export const profileData =
+    [
+        {
+            id: 1,
+            title: "Your Order",
+        },
+        {
+            id: 2,
+            title: "Your Account",
+        },
+        {
+            id: 3,
+            title: "Buy Again",
+        },
+        {
+            id: 4,
+            title: "Logout",
+        },
+
+    ]

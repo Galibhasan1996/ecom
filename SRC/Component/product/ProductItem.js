@@ -13,37 +13,70 @@ const ProductItem = ({ data, filterData }) => {
     return (
         <View style={styles.container}>
             {
-                data.filter((item) => item.category === filterData).map((item, index) => {
-                    return (
-                        <View key={index} style={{ borderBottomWidth: 1, borderColor: AllColor.Androidgreen, paddingVertical: scale(5) }}>
-                            {/* --------------image-------------- */}
-                            <View style={styles.IImage_container}>
-                                <Image source={{ uri: item?.image }} style={styles.Image_}></Image>
-                            </View>
-                            {/* -------------title----------------- */}
-                            <Text style={CustomStyle.WhiteColor}>{item.title.substring(0, 20)}</Text>
-                            {/* ------------price and rating----------- */}
-                            <View style={styles.rating_price}>
-                                <View>
-                                    <Text style={CustomStyle.WhiteColor}>{item.price}</Text>
+                filterData === "All" ?
+                    data.map((item, index) => {
+                        return (
+                            <View key={index} style={{ borderBottomWidth: 1, borderColor: AllColor.Androidgreen, paddingVertical: scale(5) }}>
+                                {/* --------------image-------------- */}
+                                <View style={styles.IImage_container}>
+                                    <Image source={{ uri: item?.image }} style={styles.Image_}></Image>
                                 </View>
+                                {/* -------------title----------------- */}
+                                <Text style={CustomStyle.WhiteColor}>{item.title.substring(0, 20)}</Text>
+                                {/* ------------price and rating----------- */}
+                                <View style={styles.rating_price}>
+                                    <View>
+                                        <Text style={CustomStyle.WhiteColor}>{item.price}</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={CustomStyle.WhiteColor}>{item.rating.rate}
+                                            <Text style={CustomStyle.WhiteColor}>{" Ratings"}</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+                                {/* -------------add to cart -------------- */}
                                 <View>
-                                    <Text style={CustomStyle.WhiteColor}>{item.rating.rate}
-                                        <Text style={CustomStyle.WhiteColor}>{" Ratings"}</Text>
-                                    </Text>
+                                    <TouchableOpacity onPress={() => {
+                                        dispatch(addToCart(item))
+                                    }}>
+                                        <Text style={[styles.button, CustomStyle.WhiteBackground, CustomStyle.BlackColor]}>{"Add to Cart"}</Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
-                            {/* -------------add to cart -------------- */}
-                            <View>
-                                <TouchableOpacity onPress={() => {
-                                    dispatch(addToCart(item))
-                                }}>
-                                    <Text style={[styles.button, CustomStyle.WhiteBackground, CustomStyle.BlackColor]}>{"Add to Cart"}</Text>
-                                </TouchableOpacity>
+                        )
+                    })
+                    :
+                    data.filter((item) => item.category === filterData).map((item, index) => {
+                        return (
+                            <View key={index} style={{ borderBottomWidth: 1, borderColor: AllColor.Androidgreen, paddingVertical: scale(5) }}>
+                                {/* --------------image-------------- */}
+                                <View style={styles.IImage_container}>
+                                    <Image source={{ uri: item?.image }} style={styles.Image_}></Image>
+                                </View>
+                                {/* -------------title----------------- */}
+                                <Text style={CustomStyle.WhiteColor}>{item.title.substring(0, 20)}</Text>
+                                {/* ------------price and rating----------- */}
+                                <View style={styles.rating_price}>
+                                    <View>
+                                        <Text style={CustomStyle.WhiteColor}>{item.price}</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={CustomStyle.WhiteColor}>{item.rating.rate}
+                                            <Text style={CustomStyle.WhiteColor}>{" Ratings"}</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+                                {/* -------------add to cart -------------- */}
+                                <View>
+                                    <TouchableOpacity onPress={() => {
+                                        dispatch(addToCart(item))
+                                    }}>
+                                        <Text style={[styles.button, CustomStyle.WhiteBackground, CustomStyle.BlackColor]}>{"Add to Cart"}</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
-                    )
-                })
+                        )
+                    })
             }
         </View>
     )

@@ -9,6 +9,8 @@ import { AllColor } from '../../util/Color/AllColor'
 import CommonButton from '../../Component/Button/CommonButton'
 import { BASE_URL, showToast, styleConsole } from '../../util/server/Server'
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useDispatch } from 'react-redux'
+import { setUserId } from '../../Redux/Slice/userId/userIdSlice'
 
 
 const Login = () => {
@@ -19,8 +21,9 @@ const Login = () => {
     // ------------state------------
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState('');
-    const [secureText, setsecureText] = useState(true);
 
+    // ------------dispatch-------------
+    const dispatch = useDispatch()
 
     const validation = () => {
         if (email == "") {
@@ -57,18 +60,17 @@ const Login = () => {
                         AsyncStorage.setItem("_id", data.user._id)
                         setEmail('')
                         setPassword('')
-                        navigaion.navigate("Home")
+                        navigaion.navigate("BottomTapNavigator")
                     }
 
                 })
                 .catch((error) => {
-                    styleConsole("🚀 ~ file: Login.js:64 ~ Login ~ error:", error)
+                    styleConsole("🚀 ~ file: Login.js:68 ~ Login ~ error:", error)
                 });
         } catch (error) {
-            styleConsole("🚀 ~ file: Login.js:67 ~ Login ~ error:", error)
+            styleConsole("🚀 ~ file: Login.js:71 ~ Login ~ error:", error)
         }
     };
-
 
     return (
         <>
@@ -124,6 +126,8 @@ const Login = () => {
                     {/* ------------login button-------------- */}
                     <CommonButton
                         ButtonTitle={"Login"}
+                        BtBackgroundColor={AllColor.white}
+                        ButtonTitleColor={AllColor.black}
                         onPress={() => {
                             validation()
                         }}

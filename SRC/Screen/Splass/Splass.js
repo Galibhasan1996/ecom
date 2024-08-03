@@ -18,7 +18,7 @@ const Splass = () => {
     const getToken = async () => {
         const token = await AsyncStorage.getItem("token")
         if (token) {
-            navigaion.replace("Home")
+            navigaion.replace("BottomTapNavigator")
         } else {
             navigaion.replace("Login")
         }

@@ -16,8 +16,8 @@ import Zocial from "react-native-vector-icons/Zocial";
 import { scale } from "react-native-size-matters";
 
 
-const CommonIcon = ({ IconCategoryName, IconName, color, size }) => {
-    const iconProps = { name: IconName, size: size ? scale(size) : scale(25), color };
+const CommonIcon = ({ IconCategoryName, IconName, color, size, marginTop }) => {
+    const iconProps = { name: IconName, size: size ? scale(size) : scale(25), color, marginTop: marginTop ? scale(marginTop) : scale(0), };
 
 
     switch (IconCategoryName) {

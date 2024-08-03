@@ -1,17 +1,14 @@
-// CustomDropdown.js
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { AllColor } from '../../util/Color/AllColor';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle';
-import { useNavigation } from '@react-navigation/native';
+import CommonIcon from '../../Component/Icon/CommonIcon';
 
 const DropDown = ({ options, onSelect }) => {
     // ------------custom Style------------
     const { CustomStyle, isDark } = useCustomStyle()
-    // --------navigation------------
-    const navigation = useNavigation()
 
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -30,9 +27,15 @@ const DropDown = ({ options, onSelect }) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.dropdownButton} onPress={toggleDropdown}>
-                <Text style={styles.dropdownButtonText}>
-                    {selectedOption ? selectedOption.label : 'jewelery'}
+                <Text style={[styles.dropdownButtonText, CustomStyle.WhiteColor]}>
+                    {selectedOption ? selectedOption.label : 'All'}
                 </Text>
+                {
+                    isOpen ?
+                        <CommonIcon IconCategoryName={"AntDesign"} IconName={"up"} color={isDark ? AllColor.white : AllColor.black} size={scale(15)}></CommonIcon>
+                        :
+                        <CommonIcon IconCategoryName={"AntDesign"} IconName={"down"} color={isDark ? AllColor.white : AllColor.black} size={scale(15)}></CommonIcon>
+                }
             </TouchableOpacity>
             {
                 isOpen &&
@@ -62,7 +65,7 @@ const DropDown = ({ options, onSelect }) => {
 
 const styles = StyleSheet.create({
     container: {
-        margin: 20,
+        marginLeft: scale(20),
     },
     dropdownButton: {
         padding: 10,
@@ -70,6 +73,9 @@ const styles = StyleSheet.create({
         borderColor: AllColor.Androidgreen,
         width: responsiveScreenWidth(50),
         borderRadius: 5,
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     dropdownButtonText: {
         fontSize: 16,
