@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TouchableOpacity, } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useNavigation } from '@react-navigation/native'
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions'
@@ -7,8 +7,9 @@ import { scale } from 'react-native-size-matters'
 import { AllColor } from '../../util/Color/AllColor'
 import CommonButton from '../../Component/Button/CommonButton'
 import CommonIcon from '../../Component/Icon/CommonIcon'
+import { MainContext } from '../../util/server/Server'
 
-const Delivery = ({ setcurrentStepe }) => {
+const Delivery = () => {
     // ------------custom Style------------
     const { CustomStyle, isDark, height, width } = useCustomStyle()
     // --------navigation------------
@@ -17,6 +18,7 @@ const Delivery = ({ setcurrentStepe }) => {
     const [option, setoption] = useState(false);
 
 
+    const { setcurrentStepe, } = useContext(MainContext);
 
 
     return (

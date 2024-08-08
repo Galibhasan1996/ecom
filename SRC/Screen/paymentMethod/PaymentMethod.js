@@ -1,20 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert, } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, } from 'react'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { scale } from 'react-native-size-matters'
 import CommonIcon from '../../Component/Icon/CommonIcon'
 import { AllColor } from '../../util/Color/AllColor'
 import RazorpayCheckout from 'react-native-razorpay';
-import { BASE_URL, razorpayKey, showToast, styleConsole } from '../../util/server/Server'
+import { BASE_URL, MainContext, razorpayKey, showToast, styleConsole } from '../../util/server/Server'
 import { useSelector, useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanCart } from '../../Redux/Slice/Counter/cartSlice'
 import { useNavigation } from '@react-navigation/native'
-const PaymentMethod = ({ selectedPaymentMethod, setselectedPaymentMethod, selectedAddress }) => {
+const PaymentMethod = () => {
     // ------------custom Style------------
     const { CustomStyle, isDark, height, width } = useCustomStyle()
-    const [userId, setuserId] = useState('');
     const cartData = useSelector((state) => state.cart.cart)
 
     const navigation = useNavigation()
@@ -23,16 +22,12 @@ const PaymentMethod = ({ selectedPaymentMethod, setselectedPaymentMethod, select
     const totolPrice = cartData.map((item) => item.price * item.quantity).reduce((a, b) => a + b, 0)
 
 
-
-    const getId = async () => {
-        const id = await AsyncStorage.getItem("_id")
-        setuserId(id)
-    }
+    const { currentStepe, setcurrentStepe, id, selectedAddress, selectedPaymentMethod, address, setselectedAddress, setselectedPaymentMethod } = useContext(MainContext);
 
 
-    useEffect(() => {
-        getId()
-    }, [])
+
+
+
 
 
     const pay = async () => {
@@ -60,7 +55,7 @@ const PaymentMethod = ({ selectedPaymentMethod, setselectedPaymentMethod, select
                 cartItem: cartData,
                 shippingAddress: selectedAddress,
                 paymentMethod: selectedPaymentMethod,
-                userId: userId
+                userId: id
             }
             const data = await fetch(`${BASE_URL}order/create`, {
                 method: "POST",

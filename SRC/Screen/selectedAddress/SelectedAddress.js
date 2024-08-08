@@ -1,26 +1,24 @@
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, setcurrentStepe } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, } from 'react-native'
+import React, { useContext } from 'react'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useNavigation } from '@react-navigation/native'
-import Stepper from '../stepper/Stepper'
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { scale } from 'react-native-size-matters'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { BASE_URL, showToast, styleConsole } from '../../util/server/Server'
 import { AllColor } from '../../util/Color/AllColor'
 import CommonButton from '../../Component/Button/CommonButton'
 import CommonIcon from '../../Component/Icon/CommonIcon'
+import { MainContext } from '../../util/server/Server'
 
-const SelectedAddress = ({ address, setselectedAddress, onPress, selectedAddress, setcurrentStepe }) => {
+const SelectedAddress = ({ onPress, }) => {
     // ------------custom Style------------
     const { CustomStyle, isDark, height, width } = useCustomStyle()
     // --------navigation------------
     const navigaion = useNavigation()
 
 
+    const { currentStepe, setcurrentStepe, id, selectedAddress, selectedPaymentMethod, address, setselectedAddress } = useContext(MainContext);
 
-
-
+    console.log("from context data  ", currentStepe, address, id);
     return (
         <View style={[styles.container, CustomStyle.BlackBackground]}>
             {/* ----------select Address------------- */}

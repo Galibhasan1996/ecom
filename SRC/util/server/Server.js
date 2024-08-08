@@ -1,7 +1,8 @@
+import { createContext } from "react";
 import Toast from "react-native-toast-message";
 
-export const PORT = 49
-export const BASE_URL = `http://192.168.35.${PORT}:3000/api/v1/`
+export const PORT = 211
+export const BASE_URL = `http://192.168.50.${PORT}:3000/api/v1/`
 
 
 
@@ -28,3 +29,5 @@ export const showToast = (type, text1, text2) => {
 
 export const razorpayKey = "rzp_test_7HR7oCY9E0AgGL"
 
+
+export const MainContext = createContext()

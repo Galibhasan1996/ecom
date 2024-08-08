@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TouchableOpacity, } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useNavigation } from '@react-navigation/native'
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions'
@@ -7,9 +7,9 @@ import { scale } from 'react-native-size-matters'
 import { AllColor } from '../../util/Color/AllColor'
 import CommonButton from '../../Component/Button/CommonButton'
 import PaymentMethod from '../paymentMethod/PaymentMethod'
+import { MainContext } from '../../util/server/Server'
 
-const Payment = ({ setcurrentStepe, selectedPaymentMethod, setselectedPaymentMethod, selectedAddress }) => {
-    // console.log("🚀 ~ file: Payment.js:12 ~ Payment ~ selectedAddress:", selectedAddress)
+const Payment = () => {
 
     // ------------custom Style------------
     const { CustomStyle, isDark, height, width } = useCustomStyle()
@@ -17,6 +17,7 @@ const Payment = ({ setcurrentStepe, selectedPaymentMethod, setselectedPaymentMet
     const navigaion = useNavigation()
     // ----------state-------------
 
+    const { currentStepe, setcurrentStepe, id, selectedAddress, selectedPaymentMethod, address, setselectedAddress, setselectedPaymentMethod } = useContext(MainContext);
 
 
     return (

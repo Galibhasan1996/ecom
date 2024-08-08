@@ -1,25 +1,24 @@
 import { StyleSheet, View, Text, TouchableOpacity, } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { scale } from 'react-native-size-matters'
 import { AllColor } from '../../util/Color/AllColor'
 import CommonButton from '../../Component/Button/CommonButton'
 import CommonIcon from '../../Component/Icon/CommonIcon'
-import { BASE_URL, showToast, styleConsole } from '../../util/server/Server'
+import { BASE_URL, MainContext, showToast, styleConsole } from '../../util/server/Server'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanCart } from '../../Redux/Slice/Counter/cartSlice'
 
-const OrderNow = ({ setcurrentStepe, address, selectedAddress, selectedPaymentMethod }) => {
+const OrderNow = () => {
 
     // ------------custom Style------------
     const { CustomStyle, isDark, height, width } = useCustomStyle()
     // ----------navigation -------------
     const navigation = useNavigation()
     // -----------state------------
-    const [userId, setuserId] = useState("");
 
     const cartData = useSelector((state) => state.cart.cart)
 
@@ -27,11 +26,9 @@ const OrderNow = ({ setcurrentStepe, address, selectedAddress, selectedPaymentMe
 
     const totolPrice = cartData?.map((item) => item.price * item.quantity).reduce((a, b) => a + b, 0)
 
+    const { currentStepe, setcurrentStepe, id, selectedAddress, selectedPaymentMethod, address, setselectedAddress } = useContext(MainContext);
 
-    const getId = async () => {
-        const id = await AsyncStorage.getItem("_id")
-        setuserId(id)
-    }
+
 
 
     const OrderHandle = async () => {
@@ -41,7 +38,7 @@ const OrderNow = ({ setcurrentStepe, address, selectedAddress, selectedPaymentMe
                 cartItem: cartData,
                 shippingAddress: selectedAddress,
                 paymentMethod: selectedPaymentMethod,
-                userId: userId
+                userId: id
             }
             const data = await fetch(`${BASE_URL}order/create`, {
                 method: "POST",
@@ -71,9 +68,7 @@ const OrderNow = ({ setcurrentStepe, address, selectedAddress, selectedPaymentMe
     }
 
 
-    useEffect(() => {
-        getId()
-    }, [])
+
 
     return (
         <View style={[styles.container, CustomStyle.BlackBackground]}>

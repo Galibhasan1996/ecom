@@ -4,7 +4,7 @@ import { useCustomStyle } from '../../Hooks/Style/useCutomStyle'
 import { useNavigation } from '@react-navigation/native'
 import Stepper from '../stepper/Stepper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { BASE_URL, showToast, styleConsole } from '../../util/server/Server'
+import { BASE_URL, MainContext, showToast, styleConsole } from '../../util/server/Server'
 import SelectedAddress from '../selectedAddress/SelectedAddress'
 import Delivery from '../delivery/Delivery'
 import Payment from '../payment/Payment'
@@ -12,6 +12,7 @@ import OrderNow from '../orderNow/OrderNow'
 import ConfirmOrder from '../confirmOrder/ConfirmOrder'
 
 const Confirmation = () => {
+
     // ------------custom Style------------
     const { CustomStyle, isDark, height, width } = useCustomStyle()
     // --------navigation------------
@@ -60,55 +61,43 @@ const Confirmation = () => {
     }, [])
 
     return (
-        <View style={[styles.container, CustomStyle.BlackBackground]}>
-            {/* --------stepper------------- */}
-            <Stepper currentStepe={currentStepe}></Stepper>
+        <MainContext.Provider value={{ currentStepe, setcurrentStepe, id, selectedAddress, selectedPaymentMethod, address, setselectedAddress, setselectedPaymentMethod }}>
+            <View style={[styles.container, CustomStyle.BlackBackground]}>
+                {/* --------stepper------------- */}
+                <Stepper currentStepe={currentStepe}></Stepper>
 
-            {/* -------------addresses--------------- */}
-            {
-                currentStepe === 0 &&
-                <SelectedAddress
-                    address={address}
-                    setselectedAddress={setselectedAddress}
-                    onPress={() => {
-                        getUserAddress()
-                    }}
-                    selectedAddress={selectedAddress}
-                    setcurrentStepe={setcurrentStepe}
-                ></SelectedAddress>
+                {/* -------------addresses--------------- */}
+                {
+                    currentStepe === 0 &&
+                    <SelectedAddress
+                        onPress={() => {
+                            getUserAddress()
+                        }}
+                    ></SelectedAddress>
 
-            }
-            {
-                currentStepe === 1 &&
-                <Delivery
-                    setcurrentStepe={setcurrentStepe}
-                ></Delivery>
-            }
-            {
-                currentStepe === 2 &&
-                <Payment
-                    setcurrentStepe={setcurrentStepe}
-                    setselectedPaymentMethod={setselectedPaymentMethod}
-                    selectedPaymentMethod={selectedPaymentMethod}
-                    selectedAddress={selectedAddress}
-                ></Payment>
-            }
-            {
-                currentStepe === 3 &&
-                <OrderNow
-                    setcurrentStepe={setcurrentStepe}
-                    address={address}
-                    selectedAddress={selectedAddress}
-                    selectedPaymentMethod={selectedPaymentMethod}
-                ></OrderNow>
-            }
-            {
-                currentStepe === 4 &&
-                <ConfirmOrder
+                }
+                {
+                    currentStepe === 1 &&
+                    <Delivery
+                        setcurrentStepe={setcurrentStepe}
+                    ></Delivery>
+                }
+                {
+                    currentStepe === 2 &&
+                    <Payment></Payment>
+                }
+                {
+                    currentStepe === 3 &&
+                    <OrderNow></OrderNow>
+                }
+                {
+                    currentStepe === 4 &&
+                    <ConfirmOrder
 
-                ></ConfirmOrder>
-            }
-        </View>
+                    ></ConfirmOrder>
+                }
+            </View>
+        </MainContext.Provider>
     )
 }
 
